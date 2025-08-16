@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Deepthi Mukesh — Global Procurement Professional</title>
-  <meta name="description" content="Animated, responsive, single-page resume with multi-theme switcher and PDF-optimized print layout." />
+  <meta name="description" content="Animated, humanized, single-page resume for Deepthi Mukesh with multi-theme switcher, subtle MI-style effects, and PDF-optimized layout." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
     /* =========================
@@ -15,7 +15,7 @@
       --radius: 20px;
       --wrap: 1080px;
 
-      /* default placeholders (overridden by themes) */
+      /* defaults (overridden by theme presets) */
       --bg:#0e1420; --ink:#e6f0ff; --muted:#aac2ff;
       --brand1:#3b82f6; --brand2:#6ee7ff;
       --g-radial:#173356; --g-top:#0b1220; --g-bottom:#0e1420;
@@ -25,6 +25,8 @@
       --tag-bg1: rgba(59,130,246,.25); --tag-bg2: rgba(110,231,255,.2);
       --timeline: rgba(110,231,255,.35);
       --pill-bg: rgba(59,130,246,.15); --pill-bd: rgba(110,231,255,.2);
+
+      --warn:#ef4444;
     }
 
     /* Ocean (metallic blue default) */
@@ -37,12 +39,13 @@
       --tag-bg1: rgba(59,130,246,.25); --tag-bg2: rgba(110,231,255,.2);
       --timeline: rgba(110,231,255,.35);
       --pill-bg: rgba(59,130,246,.15); --pill-bd: rgba(110,231,255,.25);
+      --warn:#ef4444;
     }
 
     /* Mustard (cult mustard yellow & white) */
     html[data-theme="mustard"]{
       --bg:#12100a; --ink:#fffaf0; --muted:#f5e6b5;
-      --brand1:#f59e0b; --brand2:#facc15; /* amber & sunflower */
+      --brand1:#f59e0b; --brand2:#facc15;
       --g-radial:#3b2f05; --g-top:#1c1706; --g-bottom:#12100a;
       --card-bg: rgba(245, 196, 61, 0.08);
       --card-bd: rgba(250, 204, 21, 0.35);
@@ -52,6 +55,7 @@
       --timeline: rgba(250, 204, 21, .45);
       --pill-bg: rgba(245, 158, 11, .22);
       --pill-bd: rgba(250, 204, 21, .4);
+      --warn:#ef4444;
     }
 
     /* Noir (complete black background, white text) */
@@ -65,6 +69,7 @@
       --tag-bg1: rgba(255,255,255,.15); --tag-bg2: rgba(255,255,255,.10);
       --timeline: rgba(255,255,255,.35);
       --pill-bg: rgba(255,255,255,.14); --pill-bd: rgba(255,255,255,.25);
+      --warn:#ff4545;
     }
 
     /* Paper (pure white background, black text) */
@@ -77,6 +82,7 @@
       --tag-bg1:#f2f2f2; --tag-bg2:#e9e9e9;
       --timeline:#9a9a9a;
       --pill-bg:#f2f2f2; --pill-bd:#dcdcdc;
+      --warn:#d00000;
     }
 
     /* Cyber (neon cyan on deep slate) */
@@ -90,6 +96,7 @@
       --tag-bg1: rgba(34, 211, 238, .28); --tag-bg2: rgba(103, 232, 249, .22);
       --timeline: rgba(103, 232, 249, .45);
       --pill-bg: rgba(34, 211, 238, .22); --pill-bd: rgba(103, 232, 249, .3);
+      --warn:#ff3b3b;
     }
 
     /* ====== Base layout ====== */
@@ -101,6 +108,7 @@
       color:var(--ink);
       font-family:Inter,system-ui,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
       transition: background 300ms ease, color 200ms ease;
+      overflow-x:hidden;
     }
     a{color:var(--brand2);text-decoration:none}
     a:hover{text-decoration:underline}
@@ -111,8 +119,23 @@
       background:linear-gradient(135deg, var(--tag-bg1), var(--tag-bg2));
       box-shadow: 0 10px 40px rgba(0,0,0,.35), inset 0 0 0 1px var(--card-bd);
       isolation:isolate;
-      transition: background 250ms ease, box-shadow 250ms ease;
     }
+    /* MI-style scanner line */
+    header::after{
+      content:""; position:absolute; inset:-30% -40% auto auto;
+      width:140%; height:140%;
+      background:linear-gradient(115deg, transparent 40%, rgba(255,255,255,.12) 50%, transparent 60%);
+      transform:translateX(-120%) rotate(5deg);
+      pointer-events:none;
+      animation: sweep 6s ease-in-out infinite;
+      mix-blend-mode:soft-light;
+    }
+    @keyframes sweep{
+      0%{ transform:translateX(-120%) rotate(5deg) }
+      8%{ transform:translateX(10%) rotate(5deg) }
+      100%{ transform:translateX(10%) rotate(5deg) }
+    }
+
     .hgrid{
       display:grid;gap:24px;padding:28px;
       grid-template-columns:1.2fr .8fr;grid-template-areas:"id avatar";align-items:center;
@@ -140,20 +163,31 @@
     .section{
       margin:28px 0;padding:22px;border-radius:var(--radius);
       background-color:var(--card-bg);border:1px solid var(--card-bd);
-      box-shadow:0 10px 30px rgba(0,0,0,.25)
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      position:relative;
     }
     .section h2{margin:0 0 12px;font-size:clamp(18px,2.2vw,26px)}
+    .section h2::before, .section h2::after{
+      content:""; display:inline-block; width:10px; height:10px; margin:0 8px 0 0;
+      border-left:2px solid var(--brand2); border-top:2px solid var(--brand2); transform:translateY(2px);
+    }
+    .section h2::after{
+      margin:0 0 0 8px; border-left:0; border-top:0; border-right:2px solid var(--brand2); border-bottom:2px solid var(--brand2);
+    }
 
     .timeline{position:relative;padding-left:24px}
     .timeline:before{content:"";position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg, var(--timeline), transparent)}
     .item{position:relative;padding:12px 12px 12px 18px;border-radius:12px;border:1px solid var(--card-bd);background:rgba(255,255,255,.03);margin:10px 0;opacity:0;transform:translateY(10px);transition:.6s cubic-bezier(.2,.8,.2,1)}
     .item.reveal{opacity:1;transform:none}
     .item:before{content:"";position:absolute;left:-11px;top:18px;width:10px;height:10px;border-radius:50%;background:var(--brand2);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+    .item p{margin-top:6px; opacity:.92}
 
     .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--card-bd);border-radius:16px;padding:14px;margin-bottom:14px;break-inside:avoid}
     .card h3{margin:0 0 8px;font-size:18px}
     .kbadges{display:flex;flex-wrap:wrap;gap:8px}
-    .kbadges .b{font-size:12px;border:1px dashed var(--card-bd);padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.04)}
+    .kbadges .b{font-size:12px;border:1px dashed var(--card-bd);padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.04);animation:pulse 4.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
     .pill{display:inline-block;margin:6px 6px 0 0;padding:6px 10px;border-radius:999px;background:var(--pill-bg);border:1px solid var(--pill-bd);font-size:12px}
     .gridcards{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
     .gridcards>.card{grid-column:span 6}
@@ -162,6 +196,10 @@
     .btn:active{transform:translateY(1px)}
     .ghost{background:rgba(255,255,255,.04)}
     .footer{opacity:.75;font-size:12px;text-align:center;margin:18px 0}
+
+    /* Reveal-on-scroll container */
+    .revealable{opacity:0; transform:translateY(12px) scale(.995)}
+    .reveal{opacity:1; transform:none; transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
 
     /* Theme switcher */
     .theme-toggle{
@@ -172,7 +210,14 @@
       border:1px solid var(--card-bd); background:linear-gradient(180deg,var(--tag-bg1),var(--tag-bg2));
       color:var(--ink); padding:10px 12px; border-radius:12px; font-weight:700; cursor:pointer;
       box-shadow:0 6px 20px rgba(0,0,0,.25);
+      position:relative;
     }
+    .theme-btn::after{
+      content:""; position:absolute; inset:auto 8px 8px auto; width:6px; height:6px; border-radius:50%;
+      background:radial-gradient(circle at 50% 50%, var(--warn) 0%, rgba(239,68,68,.2) 70%, transparent 72%);
+      animation:beacon 2.2s ease-in-out infinite;
+    }
+    @keyframes beacon{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.35)}50%{box-shadow:0 0 10px 4px rgba(239,68,68,.35)}}
     .theme-tray{
       display:none; gap:8px; padding:8px; border-radius:12px; backdrop-filter:blur(8px);
       border:1px solid var(--card-bd); background:rgba(0,0,0,.25);
@@ -240,34 +285,39 @@
       header, .section, .timeline, .gridcards, .card, .item{ break-inside:avoid }
     }
 
-    body.pdf .avatar img{ animation:none }
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important; transition:none!important}
+      header::after{display:none!important}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <!-- HERO -->
-    <header>
+    <header class="revealable">
       <div class="hgrid">
         <div class="avatar">
-          <!-- Replace with a real photo when available -->
-          <img alt="Deepthi Mukesh" src='./deepthi.JPG' />
+          <!-- Use a real photo name if different; falls back to PNG -->
+          <img alt="Deepthi Mukesh" src="./deepthi.jpg" onerror="this.onerror=null;this.src='deepthi.png'">
         </div>
         <div class="id">
           <h1>Deepthi Mukesh</h1>
-          <div class="tagline">Global Procurement Professional • Ex-IBM</div>
+          <div class="tagline">Global Procurement Professional • Ex-IBM • Logistics & Technology Sourcing</div>
           <div>
-            <span class="tag">RFQ & Tactical Buying</span>
+            <span class="tag">RFQs</span>
+            <span class="tag">Tactical Buying</span>
             <span class="tag">Vendor Sourcing</span>
-            <span class="tag">Contract Mgmt</span>
+            <span class="tag">Contract Management</span>
             <span class="tag">Negotiations</span>
             <span class="tag">SAP Ariba</span>
             <span class="tag">Logistics</span>
           </div>
           <div class="divider"></div>
           <div class="meta">
-            <div><span class="chip">📍 Dubai</span></div>
+            <div><span class="chip">📍 Dubai, UAE</span></div>
             <div><a class="chip" href="tel:558280133">📞 558280133</a></div>
-            <div><a class="chip" href="mailto:pinky26791@gmail.com">✉️ pinky26791@gmail.com</a></div>
+            <div><a class="chip" href="mailto:deepthi26791@gmail.com">✉️ deepthi26791@gmail.com</a></div>
             <div><a class="chip" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/deepthi-mukesh-24b9a676">🔗 LinkedIn</a></div>
           </div>
           <div class="cta">
@@ -279,44 +329,73 @@
       </div>
     </header>
 
-    <!-- SUMMARY -->
-    <section class="section" id="summary">
+    <!-- SUMMARY (humanized) -->
+    <section class="section revealable" id="summary">
       <h2>Profile</h2>
       <p>
-        Results-driven professional with 9.5+ years in procurement and client servicing across logistics and supply chain. Experienced in end-to-end operations: RFQ handling, vendor sourcing & pricing, strategic negotiations, bid submissions, client communication, purchase execution, project tracking, and post-order management. Strong vendor relations, cost efficiency, and seamless execution from inquiry to delivery.
+        Procurement specialist with <strong>9.5+ years</strong> across logistics and technology sourcing. I manage the full
+        lifecycle—<em>RFQs → vendor discovery → negotiations → contract management → order execution → delivery</em>—and I’m known
+        for clear communication, dependable follow-through, and a calm approach when timelines tighten. I build vendor relationships
+        that last, and I drive cost-sensitive decisions without compromising delivery or quality.
       </p>
+      <div class="card" style="margin-top:12px">
+        <h3 style="margin:0 0 8px">Strengths in a nutshell</h3>
+        <ul style="margin-left:18px; line-height:1.7">
+          <li><strong>Operational Clarity:</strong> transparent tracking from inquiry to delivery, with crisp updates to stakeholders.</li>
+          <li><strong>Negotiation & Compliance:</strong> competitive bids balanced with contract hygiene and audit-friendly records.</li>
+          <li><strong>Vendor Relationships:</strong> responsive, fair, and long-term—suppliers want to work with us again.</li>
+          <li><strong>Hands-on Tools:</strong> SAP Ariba, Excel/Sheets dashboards, sourcing portals, and internal ticket/PR flows.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- EXPERIENCE -->
-    <section class="section" id="experience">
+    <section class="section revealable" id="experience">
       <h2>Experience</h2>
       <div class="timeline">
-        <div class="item">
-          <strong>Global Procurement Professional</strong> — IBM, Bengaluru, India <span class="pill">06/2022–05/2024</span>
-          <div class="tagline">RFQs • Tactical Buying • Contract Mgmt (Tech & Labor) • Vendor Negotiations • Client Relationship</div>
+        <div class="item revealable">
+          <strong>Global Procurement Professional</strong> — IBM, Bengaluru, India
+          <span class="pill">Jun 2022 – May 2024</span>
+          <p>Owned tactical buying and RFQs across tech & labor categories. Streamlined bid comparisons, tightened turnaround
+            times, and partnered with internal teams to keep projects moving.</p>
         </div>
-        <div class="item">
-          <strong>Sr. Procurement Specialist</strong> — Capstone Global, Trivandrum, India <span class="pill">02/2019–10/2021</span>
+
+        <div class="item revealable">
+          <strong>Sr. Procurement Specialist</strong> — Capstone Global, Trivandrum, India
+          <span class="pill">Feb 2019 – Oct 2021</span>
+          <p>Ran end-to-end sourcing for logistics & industrial supplies: vendor scouting, price discovery, and contract basics.
+            Introduced simple templates that improved PR to PO accuracy.</p>
         </div>
-        <div class="item">
-          <strong>Senior Specialist / Specialist / Assistant / Trainee, Procurement</strong> — Red Orange North America, Inc., Trivandrum, India <span class="pill">05/2014–01/2019</span>
+
+        <div class="item revealable">
+          <strong>Senior Specialist → Specialist → Assistant → Trainee, Procurement</strong> — Red Orange North America, Inc., Trivandrum, India
+          <span class="pill">May 2014 – Jan 2019</span>
+          <p>Grew from trainee to senior by consistently delivering on time, learning fast, and handling an increasing volume
+            of RFQs and vendor negotiations with minimal escalations.</p>
         </div>
       </div>
     </section>
 
     <!-- SKILLS -->
-    <section class="section" id="skills">
+    <section class="section revealable" id="skills">
       <h2>Skills & Tools</h2>
       <div class="gridcards">
-        <div class="card">
+        <div class="card revealable">
           <h3>Core</h3>
           <div class="kbadges">
-            <span class="b">Contract Management</span><span class="b">Contract Negotiation</span><span class="b">SAP Ariba</span>
-            <span class="b">Vendor Sourcing</span><span class="b">RFQ</span><span class="b">Tactical Buying</span>
-            <span class="b">Bid Submissions</span><span class="b">Client Communication</span>
+            <span class="b">RFQ Management</span><span class="b">Tactical Buying</span><span class="b">Vendor Sourcing</span>
+            <span class="b">Contract Management</span><span class="b">Negotiations</span><span class="b">Bid Comparison</span>
+            <span class="b">PO & Invoicing Flow</span><span class="b">Client Communication</span>
           </div>
         </div>
-        <div class="card">
+        <div class="card revealable">
+          <h3>Platforms & Tools</h3>
+          <div class="kbadges">
+            <span class="b">SAP Ariba</span><span class="b">MS Excel / Google Sheets</span><span class="b">Sourcing Portals</span>
+            <span class="b">Docs & Presentations</span>
+          </div>
+        </div>
+        <div class="card revealable">
           <h3>Languages</h3>
           <div class="kbadges">
             <span class="b">English</span><span class="b">Malayalam</span><span class="b">Tamil</span>
@@ -326,20 +405,22 @@
     </section>
 
     <!-- EDUCATION -->
-    <section class="section" id="education">
+    <section class="section revealable" id="education">
       <h2>Education</h2>
-      <div class="card">
-        <strong>M.B.A., International Transportation & Logistics Management</strong> — Indian Maritime University <span class="pill">2012–2014</span>
+      <div class="card revealable">
+        <strong>M.B.A., International Transportation & Logistics Management</strong> — Indian Maritime University
+        <span class="pill">2012 – 2014</span>
       </div>
-      <div class="card">
-        <strong>B.Com (Taxation)</strong> — Sacred Heart College <span class="pill">2009–2012</span>
+      <div class="card revealable">
+        <strong>B.Com (Taxation)</strong> — Sacred Heart College
+        <span class="pill">2009 – 2012</span>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section class="section" id="contact">
+    <section class="section revealable" id="contact">
       <h2>Let’s Connect</h2>
-      <p>Open to procurement roles across logistics, technology sourcing, contract management, or vendor operations.</p>
+      <p>Open to roles in procurement, technology sourcing, logistics buying, or vendor operations in the UAE.</p>
       <div class="cta">
         <a class="btn" href="mailto:pinky26791@gmail.com">✉️ Email</a>
         <a class="btn ghost" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/deepthi-mukesh-24b9a676">🔗 LinkedIn</a>
@@ -362,25 +443,35 @@
   </div>
 
   <script>
-    // reveal on scroll
-    const obs=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('reveal');obs.unobserve(e.target);}})
-    },{threshold:.2});
-    document.querySelectorAll('.item').forEach(n=>obs.observe(n));
+    // Intersection reveals
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('reveal');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:.18});
+    document.querySelectorAll('.revealable, .item').forEach(el=>io.observe(el));
+
+    // Year
     document.getElementById('yr').textContent=new Date().getFullYear();
 
     // Print helper
     function savePdf(){
       document.body.classList.add('pdf');
-      setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('pdf'), 300); }, 50);
+      setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('pdf'), 250); }, 40);
     }
-    window.matchMedia('print').addEventListener('change', m=>{
-      if(!m.matches){ document.body.classList.remove('pdf'); }
-    });
+    if (window.matchMedia) {
+      const mq = window.matchMedia('print');
+      if (mq && mq.addEventListener) {
+        mq.addEventListener('change', m => { if(!m.matches) document.body.classList.remove('pdf'); });
+      }
+    }
 
-    // ===== Theme switcher logic =====
+    // Theme switcher
     const htmlEl = document.documentElement;
-    const KEY = 'resume_theme_choice';
+    const KEY = 'deepthi_resume_theme';
     const saved = localStorage.getItem(KEY);
     if(saved){ htmlEl.setAttribute('data-theme', saved); }
 
@@ -399,7 +490,7 @@
         htmlEl.setAttribute('data-theme', t);
         localStorage.setItem(KEY, t);
         toggle.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-expanded','false');
       });
     });
 
